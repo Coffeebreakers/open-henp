@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://henp/locale/henp.dtd">
+
+<window class="dialog"
+  align="center"
+  title="&henp.about.title;"
+  orient="vertical"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <hbox>
+    <vbox>
+      <image src="chrome://henp/skin/henp.png" maxheight="128" maxwidth="128" />
+      <spacer />
+    </vbox>
+    <vbox align="left">
+      <label value="&henp.about.extensionName;" style="font-weight: bold;" />
+      <label value="&henp.about.version; 1.0" />
+      <spacer height="10" />
+      <label value="&henp.about.code;" style="font-weight: bold;" />
+      <label value="Renato Rodrigues" onclick="window.open('mailto:renato.sp@gmail.com')" style="cursor: pointer;" />
+    </vbox>
+  </hbox>
+
+</window>

@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!-- ***** BEGIN LICENSE BLOCK *****
+
+	Version: GPL 2.0
+	CountdownClock Mozilla Extension - Displays a clock that counts down to a target date.
+	Copyright (C) 2005 Frederic Mercille (countdownclock@mercille.org)
+
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation version 2.0
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+	***** END LICENSE BLOCK ***** -->
+
+<!DOCTYPE overlay [
+	<!ENTITY % countdownclockDTD SYSTEM "chrome://countdownclock/locale/countdownclock.dtd">
+	%countdownclockDTD;
+	<!ENTITY % countdownclockFallbackDTD SYSTEM "chrome://countdownclock/content/locale/en-US/countdownclock.dtd">
+	%countdownclockFallbackDTD;
+]>
+
+<overlay id="countdownclock_overlay"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script type="application/x-javascript" src="chrome://countdownclock/content/countdownclock.js" />
+
+	<statusbar id="status-bar">
+		<stringbundleset id="countdownclock_strings_set">
+			<stringbundle id="countdownclock_strings" src="chrome://countdownclock/locale/countdownclock.properties" />
+		</stringbundleset>
+
+	<popup id="countdownclock-main-context-menu">
+		<menuitem id="countdownclock-menu-color-picker"
+				label="&countdownclock.maincontextmenu.opensettings;"
+				oncommand="window.openDialog('chrome://countdownclock/content/countdownclock.xul');"/>
+	</popup>
+
+
+		<statusbarpanel
+				ondblclick="window.openDialog('chrome://countdownclock/content/countdownclock.xul');"
+				context="countdownclock-main-context-menu"
+				id="countdownclock_panel"
+				label=""
+				insertbefore="statusbarpanel-progress" />
+
+<!--	<box id="countdownclock-status-bar"
+			 context="countdownclock-main-context-menu"
+			 width="22"
+			 height="15"
+			 ondblclick="alert('doubleclick')"
+			 onclick="alert('click')"/>-->
+
+	</statusbar>
+</overlay>

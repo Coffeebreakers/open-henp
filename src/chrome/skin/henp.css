@@ -1,0 +1,44 @@
+#henp_hour_panel, #henp_countdown_panel {
+    border: 1px inset;
+    padding: 1px 4px;
+    cursor: pointer
+}
+    
+#henp_countdown_panel {
+    margin-left: 4px;
+}
+
+#henp_panel.disabled #henp_countdown_panel {
+    display: none;
+}
+
+#henp_panel.minimumTime #henp_countdown_panel {
+    background-color: #00ff40;
+}
+
+#henp_panel.exactTime #henp_countdown_panel {
+    background-color: #ffff00;
+}
+
+#henp_panel.lastAlertTime #henp_countdown_panel {
+    background-color: #ff0000;
+    color: #FFF;
+}
+
+#henp_about #ext_name {
+    font-weight: bold;
+    font-size: x-large;
+}
+
+#henp_about .heavy {
+    font-weight: bold;
+}
+
+#henp_about .url {
+    cursor: pointer;
+}
+
+#henp_about .url:hover {
+    text-decoration: underline;
+}
+

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://henp/content/spinbox/spinbox.css" type="text/css"?>
+
+<!DOCTYPE dialog SYSTEM "chrome://henp/locale/henp.dtd">
+
+<dialog
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	title="&henp.extensionName;"
+	id="HenpSettingsWindow"
+	buttons="accept,cancel"
+	align="center"
+	ondialogaccept="saveHenpSettings();"
+	onload="loadTargetForm();">
+	
+	<script type="application/x-javascript" src="chrome://henp/content/henp.js" />
+
+	<groupbox id="targetGroupBox" orient="vertical" align="center" style="padding: 10px;">
+		<caption label="&henp.settings.targetTab.target;" />
+		<box id="absoluteTargetBox" orient="vertical">
+			<hbox>
+				<vbox align="center">
+					<label value="&henp.settings.targetTab.hours;" />
+					<vspinbox id="spinHours" min="0" max="23" value="0" />
+				</vbox>
+				<vbox align="center">
+					<label value="&henp.settings.targetTab.minutes;" />
+					<vspinbox id="spinMinutes" min="0" max="59" value="0" />
+				</vbox>
+			</hbox>
+		</box>
+	</groupbox>
+	<groupbox id="workHoursGroup">
+		<caption label="&henp.settings.workHours;" />
+		<radiogroup id="workHoursRadioGroup" orient="horizontal" oncommand="henp_workHoursChange(this.value);">
+			<radio id="work848" label="8:48h" value="0" />
+			<radio id="work720" label="7:20h" value="1" />
+		</radiogroup>
+	</groupbox>
+	<groupbox id="optionsGroupbox">
+		<caption label="&henp.settings.options;" />
+		<checkbox id="holidaySaturday" label="&henp.settings.holidaySaturday;" />
+	</groupbox>
+	<groupbox id="alertGroupbox">
+		<caption label="&henp.settings.targetTab.alert;" />
+		<checkbox id="alertMethodSound" label="&henp.settings.targetTab.alert.sound;" />
+		<hbox>
+			<textbox id="alertSoundFile" flex="1" />
+			<button id="alertSoundFileBrowse" label="&henp.settings.targetTab.alert.sound.browse;" oncommand="browseSoundFile();" />
+		</hbox>
+	</groupbox>
+</dialog>

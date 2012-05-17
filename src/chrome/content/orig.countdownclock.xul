@@ -1,0 +1,342 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!-- ***** BEGIN LICENSE BLOCK *****
+
+	Version: GPL 2.0
+	CountdownClock Mozilla Extension - Displays a clock that counts down to a target date.
+	Copyright (C) 2005 Frederic Mercille (countdownclock@mercille.org)
+
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation version 2.0
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+	***** END LICENSE BLOCK ***** -->
+
+
+<!DOCTYPE dialog SYSTEM "chrome://countdownclock/locale/countdownclock.dtd">
+
+<?xml-stylesheet href="chrome://countdownclock/content/spinbox/spinbox.css" type="text/css"?>
+
+<dialog
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	title="&countdownclock.settingsWindow.title;"
+	id="CountdownClockSettingsWindow"
+	persist="screenX screenY width height"
+	buttons="accept,cancel"
+	ondialogaccept="saveCountdownClockSettings();"
+	onload="loadTargetForm();">
+
+	<script type="application/x-javascript">
+		<![CDATA[
+
+			function loadTargetForm()
+			{
+				const preferencesService = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("");
+
+				var i ;
+
+				var theTargetString = preferencesService.getCharPref("countdownclock.targetTime") ;
+				var theTargetElements = theTargetString.split(":");
+
+				document.getElementById("spinYear").value = theTargetElements[0] ;
+				document.getElementById("spinMonth").value = theTargetElements[1] ;
+				document.getElementById("spinDate").value = theTargetElements[2] ;
+				document.getElementById("spinHours").value = theTargetElements[3] ;
+				document.getElementById("spinMinutes").value = theTargetElements[4] ;
+				document.getElementById("spinSeconds").value = theTargetElements[5] ;
+
+				document.getElementById("alertMessage").value = preferencesService.getCharPref("countdownclock.alertMessage") ;
+				document.getElementById("alertMethodStatusbar").checked = preferencesService.getBoolPref("countdownclock.alertMethodStatusbar") ;
+				document.getElementById("alertMethodPopup").checked = preferencesService.getBoolPref("countdownclock.alertMethodPopup") ;
+				document.getElementById("alertMethodSound").checked = preferencesService.getBoolPref("countdownclock.alertMethodSound") ;
+				document.getElementById("alertSoundFile").value = preferencesService.getCharPref("countdownclock.alertSoundFile") ;
+
+				var theDisplayedUnits = preferencesService.getCharPref("countdownclock.unitDisplay") ;
+
+				document.getElementById("unitDays").checked = (theDisplayedUnits.indexOf("d") >= 0) ;
+				document.getElementById("unitHours").checked = (theDisplayedUnits.indexOf("h") >= 0) ;
+				document.getElementById("unitMinutes").checked = (theDisplayedUnits.indexOf("m") >= 0) ;
+				document.getElementById("unitSeconds").checked = (theDisplayedUnits.indexOf("s") >= 0) ;
+
+				document.getElementById("displayPrefix").value = preferencesService.getCharPref("countdownclock.displayPrefix") ;
+				document.getElementById("displaySuffix").value = preferencesService.getCharPref("countdownclock.displaySuffix") ;
+
+				document.getElementById("displayToggleRadioGroup").selectedIndex = preferencesService.getBoolPref("countdownclock.toggleDisplay") ? 1 : 0 ;
+
+				document.getElementById("spinDaysLeft").value = 0 ;
+				document.getElementById("spinHoursLeft").value = 0 ;
+				document.getElementById("spinMinutesLeft").value = 0 ;
+				document.getElementById("spinSecondsLeft").value = 0 ;
+
+				document.getElementById("padding").checked = preferencesService.getBoolPref("countdownclock.padWithLeadingZero") ;
+				document.getElementById("hideNullUnits").checked = preferencesService.getBoolPref("countdownclock.hideNullUnits") ;
+				document.getElementById("displayLengthRadioGroup").selectedIndex = preferencesService.getIntPref("countdownclock.displayLength") ;
+
+				document.getElementById("targetTypeRadioGroup").selectedIndex = 0 ;
+			}
+
+			function saveCountdownClockSettings()
+			{
+				const preferencesService = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("");
+
+				if(document.getElementById("targetTypeRadioGroup").selectedIndex == 1) // Relative target
+				{
+					var relativeDays = parseInt(document.getElementById("spinDaysLeft").value,10) ;
+					var relativeHours = parseInt(document.getElementById("spinHoursLeft").value,10) ;
+					var relativeMinutes = parseInt(document.getElementById("spinMinutesLeft").value,10) ;
+					var relativeSeconds = parseInt(document.getElementById("spinSecondsLeft").value,10) ;
+
+					var relativeTotalSeconds = (relativeDays * 86400) + (relativeHours * 3600) + (relativeMinutes * 60) + relativeSeconds ;
+
+					var relativeTargetTime = new Date() ;
+					var relativeNumberOfSeconds = relativeTargetTime.getTime() + (relativeTotalSeconds * 1000);
+					relativeTargetTime.setTime(relativeNumberOfSeconds) ;
+
+					document.getElementById("spinYear").value = relativeTargetTime.getYear() + 1900 ;
+					document.getElementById("spinMonth").value = relativeTargetTime.getMonth() + 1 ;
+					document.getElementById("spinDate").value = relativeTargetTime.getDate() ;
+					document.getElementById("spinHours").value = relativeTargetTime.getHours() ;
+					document.getElementById("spinMinutes").value = relativeTargetTime.getMinutes() ;
+					document.getElementById("spinSeconds").value = relativeTargetTime.getSeconds() ;
+				}
+
+				var theYearSpin = document.getElementById("spinYear").value ;
+				var theMonthSpin = document.getElementById("spinMonth").value ;
+				var theDateSpin = document.getElementById("spinDate").value ;
+				var theHoursSpin = document.getElementById("spinHours").value ;
+				var theMinutesSpin = document.getElementById("spinMinutes").value ;
+				var theSecondsSpin = document.getElementById("spinSeconds").value ;
+
+				preferencesService.setCharPref("countdownclock.targetTime", theYearSpin+":"+theMonthSpin+":"+theDateSpin+":"+theHoursSpin+":"+theMinutesSpin+":"+theSecondsSpin );
+
+				var alertMessage = document.getElementById("alertMessage") ;
+				preferencesService.setCharPref("countdownclock.alertMessage", alertMessage.value) ;
+
+				var alertMethodStatusbar = document.getElementById("alertMethodStatusbar") ;
+				var alertMethodPopup = document.getElementById("alertMethodPopup") ;
+				var alertMethodSound = document.getElementById("alertMethodSound") ;
+				var alertSoundFile = document.getElementById("alertSoundFile") ;
+				preferencesService.setBoolPref("countdownclock.alertMethodStatusbar", alertMethodStatusbar.checked) ;
+				preferencesService.setBoolPref("countdownclock.alertMethodPopup", alertMethodPopup.checked) ;
+				preferencesService.setBoolPref("countdownclock.alertMethodSound", alertMethodSound.checked) ;
+				preferencesService.setCharPref("countdownclock.alertSoundFile", alertSoundFile.value) ;
+
+				var displayDays = document.getElementById("unitDays").checked ;
+				var displayHours = document.getElementById("unitHours").checked ;
+				var displayMinutes = document.getElementById("unitMinutes").checked ;
+				var displaySeconds = document.getElementById("unitSeconds").checked ;
+
+				var displayPref = "" ;
+				if(displayDays) displayPref += "d" ;
+				if(displayHours) displayPref += "h" ;
+				if(displayMinutes) displayPref += "m" ;
+				if(displaySeconds) displayPref += "s" ;
+
+				preferencesService.setCharPref("countdownclock.unitDisplay", displayPref) ;
+
+				preferencesService.setBoolPref("countdownclock.padWithLeadingZero", document.getElementById("padding").checked) ;
+				preferencesService.setBoolPref("countdownclock.hideNullUnits", document.getElementById("hideNullUnits").checked) ;
+				preferencesService.setIntPref("countdownclock.displayLength", document.getElementById("displayLengthRadioGroup").value) ;
+
+				var prefix = document.getElementById("displayPrefix") ;
+				var suffix = document.getElementById("displaySuffix") ;
+
+				preferencesService.setCharPref("countdownclock.displayPrefix", prefix.value) ;
+				preferencesService.setCharPref("countdownclock.displaySuffix", suffix.value) ;
+
+				// We reset the triggerAlert property
+				preferencesService.setBoolPref("countdownclock.triggerAlert", true) ;
+
+				var toggleDisplay = document.getElementById('displayToggleRadioGroup') ;
+				if(toggleDisplay.value.indexOf("0") >= 0) // off
+				{
+					preferencesService.setBoolPref("countdownclock.toggleDisplay", false) ;
+				}
+				else // on
+				{
+					preferencesService.setBoolPref("countdownclock.toggleDisplay", true) ;
+				}
+
+				return true ;
+			}
+
+			function browseSoundFile()
+			{
+				try
+				{
+					var NFP = Components.interfaces.nsIFilePicker;
+					var picker = Components.classes["@mozilla.org/filepicker;1"].createInstance(NFP);
+					picker.init(window, null, NFP.modeOpen);
+					picker.appendFilter("*.wav", "*.wav");
+					if(picker.show() == NFP.returnOK)
+					{
+						document.getElementById("alertSoundFile").value = picker.file.path ;
+					}
+				}
+				catch(e)
+				{
+					alert(e) ;
+				}
+			}
+
+			/**
+			* function unitsChanged()
+			* Makes sure at least one unit is selected...
+			**/
+			function unitsChanged()
+			{
+				var days = document.getElementById("unitDays") ;
+				var hours = document.getElementById("unitHours") ;
+				var minutes = document.getElementById("unitMinutes") ;
+				var seconds = document.getElementById("unitSeconds") ;
+
+				if(!days.checked && !hours.checked && !minutes.checked && !seconds.checked)
+				{
+					seconds.checked = true ;
+				}
+			}
+
+
+
+		]]>
+	</script>
+
+	<tabbox flex="1">
+		<tabs>
+			<tab label="&countdownclock.settingsWindow.targetTab;" />
+			<tab label="&countdownclock.settingsWindow.displayTab;" />
+		</tabs>
+		<tabpanels flex="1">
+			<tabpanel id="targetTab" orient="vertical">
+				<groupbox id="targetTypeGroupbox">
+					<caption label="&countdownclock.settingsWindow.targetTab.targetType;" />
+					<radiogroup id="targetTypeRadioGroup" orient="horizontal">
+						<radio id="targetTypeAbsolute" label="&countdownclock.settingsWindow.targetTab.absoluteTarget;" onclick="document.getElementById('targetTimeDeck').selectedIndex=0;" />
+						<radio id="targetTypeRelative" label="&countdownclock.settingsWindow.targetTab.relativeTarget;" onclick="document.getElementById('targetTimeDeck').selectedIndex=1;" />
+					</radiogroup>
+				</groupbox>
+				<groupbox id="targetGroupBox" orient="vertical" align="center" style="padding: 10px;">
+					<caption label="&countdownclock.settingsWindow.targetTab.target;" />
+					<deck id="targetTimeDeck">
+						<box id="absoluteTargetBox" orient="vertical">
+							<hbox>
+								<vbox align="center">
+									<label value="&countdownclock.settingsWindow.targetTab.year;" />
+									<vspinbox id="spinYear" min="2005" max="2099" value="2005" />
+								</vbox>
+								<vbox align="center">
+									<label value="&countdownclock.settingsWindow.targetTab.month;" />
+									<vspinbox id="spinMonth" min="1" max="12" value="1" />
+								</vbox>
+								<vbox align="center">
+									<label value="&countdownclock.settingsWindow.targetTab.date;" />
+									<vspinbox id="spinDate" min="1" max="31" value="1" />
+								</vbox>
+							</hbox>
+							<spacer height="15" />
+							<hbox>
+								<vbox align="center">
+									<label value="&countdownclock.settingsWindow.targetTab.hours;" />
+									<vspinbox id="spinHours" min="0" max="23" value="0" />
+								</vbox>
+								<vbox align="center">
+									<label value="&countdownclock.settingsWindow.targetTab.minutes;" />
+									<vspinbox id="spinMinutes" min="0" max="59" value="0" />
+								</vbox>
+								<vbox align="center">
+									<label value="&countdownclock.settingsWindow.targetTab.seconds;" />
+									<vspinbox id="spinSeconds" min="0" max="59" value="0" />
+								</vbox>
+							</hbox>
+						</box>
+						<box id="relativeTargetBox" orient="vertical">
+							<box orient="horizontal">
+								<hspinbox id="spinDaysLeft" min="0" max="9999" />
+								<label value="&countdownclock.settingsWindow.targetTab.daysLeft;" />
+							</box>
+							<box orient="horizontal">
+								<hspinbox id="spinHoursLeft" min="0" max="23" />
+								<label value="&countdownclock.settingsWindow.targetTab.hoursLeft;" />
+							</box>
+							<box orient="horizontal">
+								<hspinbox id="spinMinutesLeft" min="0" max="59" />
+								<label value="&countdownclock.settingsWindow.targetTab.minutesLeft;" />
+							</box>
+							<box orient="horizontal">
+								<hspinbox id="spinSecondsLeft" min="0" max="59" />
+								<label value="&countdownclock.settingsWindow.targetTab.secondsLeft;" />
+							</box>
+						</box>
+					</deck>
+				</groupbox>
+				<groupbox id="alertGroupbox">
+					<caption label="&countdownclock.settingsWindow.targetTab.alert;" />
+					<label>&countdownclock.settingsWindow.targetTab.alert.display;</label>
+					<textbox id="alertMessage" />
+					<checkbox id="alertMethodStatusbar" label="&countdownclock.settingsWindow.targetTab.alert.statusbar;" />
+					<checkbox id="alertMethodPopup" label="&countdownclock.settingsWindow.targetTab.alert.popup;" />
+					<checkbox id="alertMethodSound" label="&countdownclock.settingsWindow.targetTab.alert.sound;" />
+					<hbox>
+						<textbox id="alertSoundFile" flex="1" />
+						<button id="alertSoundFileBrowse" label="&countdownclock.settingsWindow.targetTab.alert.sound.browse;" oncommand="browseSoundFile();" />
+					</hbox>
+				</groupbox>
+			</tabpanel>
+			<tabpanel id="displayTab" orient="vertical" flex="1" >
+				<groupbox id="displayToggleBox" orient="vertical">
+					<caption label="&countdownclock.settingsWindow.displayTab.toggle;" />
+					<radiogroup id="displayToggleRadioGroup" orient="horizontal" >
+						<radio label="&countdownclock.settingsWindow.displayTab.toggle.off;" value="0" />
+						<radio label="&countdownclock.settingsWindow.displayTab.toggle.on;" value="1" />
+					</radiogroup>
+				</groupbox>
+				<hbox>
+					<groupbox id="unitsGroupBox" orient="horizontal" flex="1">
+						<caption label="&countdownclock.settingsWindow.displayTab.units;" />
+						<vbox>
+							<checkbox id="unitDays" label="&countdownclock.settingsWindow.displayTab.units.days;" oncommand="unitsChanged();" />
+							<checkbox id="unitMinutes" label="&countdownclock.settingsWindow.displayTab.units.minutes;" oncommand="unitsChanged();" />
+						</vbox>
+						<vbox>
+							<checkbox id="unitHours" label="&countdownclock.settingsWindow.displayTab.units.hours;" oncommand="unitsChanged();" />
+							<checkbox id="unitSeconds" label="&countdownclock.settingsWindow.displayTab.units.seconds;" oncommand="unitsChanged();" />
+						</vbox>
+					</groupbox>
+					<groupbox id="displayOptionsGroupBox" orient="vertical" flex="1">
+						<caption label="&countdownclock.settingsWindow.displayTab.options;" />
+						<checkbox id="padding" label="&countdownclock.settingsWindow.displayTab.options.padding;" />
+						<checkbox id="hideNullUnits" label="&countdownclock.settingsWindow.displayTab.options.hideNull;" />
+					</groupbox>
+				</hbox>
+				<groupbox id="abbreviationGroupBox">
+					<caption label="&countdownclock.settingsWindow.displayTab.displayLength;" />
+					<radiogroup id="displayLengthRadioGroup" orient="vertical">
+						<radio id="displayLengthFullDisplay" label="&countdownclock.settingsWindow.displayTab.displayLength.full;" value="0" />
+						<radio id="displayLengthLetterDisplay" label="&countdownclock.settingsWindow.displayTab.displayLength.abbrev;" value="1" />
+						<radio id="displayLengthColonDisplay" label="&countdownclock.settingsWindow.displayTab.displayLength.colon;" value="2" />
+					</radiogroup>
+				</groupbox>
+				<groupbox id="prefixSuffixGroupBox" orient="vertical">
+					<caption label="&countdownclock.settingsWindow.displayTab.prefixSuffix;" />
+					<hbox>
+						<label id="prefixLabel" value="&countdownclock.settingsWindow.displayTab.prefixSuffix.prefix;" flex="0" />
+						<textbox id="displayPrefix" flex="1" />
+					</hbox>
+					<hbox>
+						<label id="suffixLabel" value="&countdownclock.settingsWindow.displayTab.prefixSuffix.suffix;" flex="0" />
+						<textbox id="displaySuffix" flex="1" />
+					</hbox>
+				</groupbox>
+			</tabpanel>
+		</tabpanels>
+	</tabbox>
+</dialog>

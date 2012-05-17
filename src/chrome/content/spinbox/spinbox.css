@@ -1,0 +1,16 @@
+spinbox {
+  -moz-binding: url("chrome://henp/content/spinbox/spinbox.xbl#spinbox");
+}
+
+vspinbox {
+  -moz-binding: url("chrome://henp/content/spinbox/spinbox.xbl#vspinbox");
+}
+
+hspinbox {
+  -moz-binding: url("chrome://henp/content/spinbox/spinbox.xbl#hspinbox");
+}
+
+.spinboxElement {
+	margin: 0px;
+	padding: 0px;
+}

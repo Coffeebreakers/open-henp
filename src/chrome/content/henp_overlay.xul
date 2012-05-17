@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://henp/skin/henp.css" type="text/css"?>
+
+<!DOCTYPE overlay [
+	<!ENTITY % henpDTD SYSTEM "chrome://henp/locale/henp.dtd">
+	%henpDTD;
+]>
+
+<overlay
+	id="henp_overlay"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script type="application/x-javascript" src="chrome://henp/content/henp.js" />
+	<script type="application/x-javascript">
+		<![CDATA[
+			window.setInterval(henp_update, 1000) ;
+		]]>
+	</script>
+
+	<statusbar id="status-bar">
+		<stringbundleset id="henp_strings_set">
+			<stringbundle id="henp_strings" src="chrome://henp/locale/henp.properties" />
+		</stringbundleset>
+		
+		<statusbarpanel
+				onclick="window.openDialog('chrome://henp/content/henp.xul');"
+				insertbefore="statusbarpanel-progress"
+				id="henp_panel">
+			
+			<hbox id="henp_hour_panel"></hbox>
+			<hbox id="henp_countdown_panel"></hbox>
+			
+		</statusbarpanel>
+		
+	</statusbar>
+</overlay>

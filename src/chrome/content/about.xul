@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://henp/skin/henp.css" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://henp/locale/henp.dtd">
+
+<window class="dialog"
+	title="&henp.about.title; - &henp.extensionName;"
+	orient="vertical"
+	autostretch="always"
+	align="center"
+	id="henp_about"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<groupbox align="center" orient="horizontal">
+		<vbox>
+			<hbox>
+				<vbox>
+					<text value="&henp.extensionName;" id="ext_name"/>
+					<hbox>
+						<text value="&henp.about.version; &henp.versionNumber;"/>
+					</hbox>
+					<separator class="thin"/>
+					<text value="&henp.about.author;" class="heavy"/>
+					<text value="Renato Rodrigues" onclick="window.open('mailto:renato.sp@gmail.com');"  class="url"/>
+					
+					<separator class="thin"/>
+					<text value="&henp.about.site;" class="heavy"/>
+					<text value="www.renatorodrigues.com" onclick="window.open('http://www.renatorodrigues.com');" class="url"/>
+					
+					<separator class="thin"/>
+					<text value="&henp.about.twitter;" class="heavy"/>
+					<text value="@renatorodrigues" onclick="window.open('http://www.twitter.com/renatorodrigues');" class="url"/>
+				</vbox>
+				<spacer width="15"/>
+				<vbox align="top">
+					<image src="chrome://henp/skin/henp.png" />
+				</vbox>
+			</hbox>
+		</vbox>
+	</groupbox>
+	<hbox align="start">
+		<spacer flex="1"/>
+		<button label="&henp.about.close;" oncommand="window.close();"/>
+	</hbox>
+</window>

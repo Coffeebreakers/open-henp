@@ -1,0 +1,5 @@
+content		henp		chrome/content/
+skin		henp		classic     chrome/skin/
+locale		henp		pt-BR		chrome/locale/pt-BR/
+
+overlay		chrome://browser/content/browser.xul		chrome://henp/content/henp_overlay.xul

@@ -1,0 +1,234 @@
+<?xml version="1.0"?>
+
+<bindings id="xulSpinbox"
+          xmlns="http://www.mozilla.org/xbl"
+          xmlns:xbl="http://www.mozilla.org/xbl"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<?xml-stylesheet href="chrome://henp/content/spinbox/spinbox.css" type="text/css"?>
+
+	<binding id="spinbox">
+		<!-- content, property, method and event descriptions go here -->
+		<content>
+				<xul:box orient="horizontal" style="padding: 0px;" flex="0" >
+					<xul:textbox class="spinboxElement" id="spinValue"
+							size="4"
+							maxlength="4"
+							style="font-size: 10pt; text-align: center;"
+							xbl:inherits="value"
+							onchange="valueChanged();"
+							flex="0" />
+					<xul:box orient="vertical">
+						<xul:image src="chrome://henp/content/spinbox/arrow_up.png" onclick="spin(true);" maxheight="10px" maxwidth="12px" />
+						<xul:spacer height="2" />
+						<xul:image src="chrome://henp/content/spinbox/arrow_down.png" onclick="spin(false);" maxheight="10px" maxwidth="12px" />
+					</xul:box>
+				</xul:box>
+		</content>
+
+		<implementation>
+
+			<property name="min">
+				<getter>
+					return this.getAttribute('min') ;
+				</getter>
+				<setter>
+					return this.setAttribute('min',val) ;
+				</setter>
+			</property>
+
+			<property name="max">
+				<getter>
+					return this.getAttribute('max') ;
+				</getter>
+				<setter>
+					return this.setAttribute('max',val) ;
+				</setter>
+			</property>
+
+			<property name="value">
+				<getter>
+					return this.getAttribute('value');
+				</getter>
+				<setter>
+					var v = parseInt(val,10);
+					if(v &lt; parseInt(this.min,10)) v = this.max ;
+					if(v &gt; parseInt(this.max,10)) v = this.min ;
+					if(isNaN(v)) v = this.min ;
+					return this.setAttribute('value',''+v) ;
+				</setter>
+			</property>
+
+			<method name="spin">
+				<parameter name="up" />
+				<body>
+					if(up) this.value = parseInt(this.value,10) + 1 ;
+					else this.value = parseInt(this.value,10) - 1 ;
+					var theTextbox = document.getAnonymousNodes(this)[0].childNodes[1] ;
+					theTextbox.value = this.value ;
+				</body>
+			</method>
+
+			<method name="valueChanged">
+				<body>
+					var theTextbox = document.getAnonymousNodes(this)[0].childNodes[1] ;
+					this.value = parseInt(theTextbox.value,10) ;
+					theTextbox.value = this.value ;
+				</body>
+			</method>
+
+		</implementation>
+
+	</binding>
+
+	<binding id="hspinbox">
+    <!-- content, property, method and event descriptions go here -->
+		<content>
+				<xul:box orient="horizontal" style="padding: 0px;" flex="0" >
+					<xul:box orient="vertical" style="padding: 0px;" flex="0" >
+						<xul:spacer flex="1" />
+						<xul:image src="chrome://henp/content/spinbox/arrow_left.png" onclick="spin(false);" maxheight="12px" maxwidth="12px" />
+						<xul:spacer flex="1" />
+					</xul:box>
+					<xul:textbox class="spinboxElement" id="spinValue"
+							size="4"
+							maxlength="4"
+							style="font-size: 10pt; text-align: center;"
+							xbl:inherits="value"
+							onchange="valueChanged();"
+							flex="0" />
+					<xul:box orient="vertical" style="padding: 0px;" flex="0" >
+						<xul:spacer flex="1" />
+						<xul:image src="chrome://henp/content/spinbox/arrow_right.png" onclick="spin(true);"  maxheight="12px" maxwidth="12px" />
+						<xul:spacer flex="1" />
+					</xul:box>
+				</xul:box>
+		</content>
+
+		<implementation>
+
+			<property name="min">
+				<getter>
+					return this.getAttribute('min') ;
+				</getter>
+				<setter>
+					return this.setAttribute('min',val) ;
+				</setter>
+			</property>
+
+			<property name="max">
+				<getter>
+					return this.getAttribute('max') ;
+				</getter>
+				<setter>
+					return this.setAttribute('max',val) ;
+				</setter>
+			</property>
+
+			<property name="value">
+				<getter>
+					return this.getAttribute('value');
+				</getter>
+				<setter>
+					var v = parseInt(val,10);
+					if(v &lt; parseInt(this.min,10)) v = this.max ;
+					if(v &gt; parseInt(this.max,10)) v = this.min ;
+					if(isNaN(v)) v = this.min ;
+					return this.setAttribute('value',''+v) ;
+				</setter>
+			</property>
+
+			<method name="spin">
+				<parameter name="up" />
+				<body>
+					if(up) this.value = parseInt(this.value,10) + 1 ;
+					else this.value = parseInt(this.value,10) - 1 ;
+					var theTextbox = document.getAnonymousNodes(this)[0].childNodes[1] ;
+					theTextbox.value = this.value ;
+				</body>
+			</method>
+
+			<method name="valueChanged">
+				<body>
+					var theTextbox = document.getAnonymousNodes(this)[0].childNodes[1] ;
+					this.value = parseInt(theTextbox.value,10) ;
+					theTextbox.value = this.value ;
+				</body>
+			</method>
+
+		</implementation>
+
+	</binding>
+
+	<binding id="vspinbox">
+    <!-- content, property, method and event descriptions go here -->
+		<content>
+				<xul:box orient="vertical" style="padding: 0px;" flex="0" >
+					<xul:image src="chrome://henp/content/spinbox/arrow_up.png" onclick="spin(true);" maxheight="12px" />
+					<xul:textbox class="spinboxElement" id="spinValue"
+							size="4"
+							maxlength="4"
+							style="font-size: 10pt; text-align: center;"
+							xbl:inherits="value"
+							onchange="valueChanged();"
+							flex="0" />
+					<xul:image src="chrome://henp/content/spinbox/arrow_down.png" onclick="spin(false);" maxheight="12px" />
+				</xul:box>
+		</content>
+
+		<implementation>
+
+			<property name="min">
+				<getter>
+					return this.getAttribute('min') ;
+				</getter>
+				<setter>
+					return this.setAttribute('min',val) ;
+				</setter>
+			</property>
+
+			<property name="max">
+				<getter>
+					return this.getAttribute('max') ;
+				</getter>
+				<setter>
+					return this.setAttribute('max',val) ;
+				</setter>
+			</property>
+
+			<property name="value">
+				<getter>
+					return this.getAttribute('value');
+				</getter>
+				<setter>
+					var v = parseInt(val,10);
+					if(v &lt; parseInt(this.min,10)) v = this.max ;
+					if(v &gt; parseInt(this.max,10)) v = this.min ;
+					if(isNaN(v)) v = this.min ;
+					return this.setAttribute('value',''+v) ;
+				</setter>
+			</property>
+
+			<method name="spin">
+				<parameter name="up" />
+				<body>
+					if(up) this.value = parseInt(this.value,10) + 1 ;
+					else this.value = parseInt(this.value,10) - 1 ;
+					var theTextbox = document.getAnonymousNodes(this)[0].childNodes[1] ;
+					theTextbox.value = this.value ;
+				</body>
+			</method>
+
+			<method name="valueChanged">
+				<body>
+					var theTextbox = document.getAnonymousNodes(this)[0].childNodes[1] ;
+					this.value = parseInt(theTextbox.value,10) ;
+					theTextbox.value = this.value ;
+				</body>
+			</method>
+
+		</implementation>
+
+	</binding>
+
+</bindings>
