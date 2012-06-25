@@ -13,6 +13,7 @@ class ZipUtilities:
         	self.addFolderToZip(zip_file, file)
         zip_file.close()
 
+    # TODO: Remove the src folder path during the zip generation
     def addFolderToZip(self, zip_file, folder):
         for file in os.listdir(folder):
             full_path = os.path.join(folder, file)
