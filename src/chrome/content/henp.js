@@ -14,41 +14,21 @@ function henp_update() {
 		henpPanel.className = '';
 	}
 	
-	var hourPanel = document.getElementById('henp_hour_panel');
-	var hourPanelTime = new Date();
-	hourPanelTime.setTime(targetTime);
-	hourPanelTime.setMinutes(hourPanelTime.getMinutes() - 30);
-	var hourPanelHours = hourPanelTime.getHours();
-	var hourPanelMinutes = hourPanelTime.getMinutes();
-	hourPanel.textContent = henpGetLocaleString('happyHour') + ' ' + ((hourPanelHours >= 10)?hourPanelHours:('0' + hourPanelHours)) + ':' + ((hourPanelMinutes >= 10)?hourPanelMinutes:('0' + hourPanelMinutes));
-
-	var now = new Date();
-	var timeLeft = new Date(now.getFullYear() +'/' + parseInt(1 +now.getMonth())+'/'+now.getDate() + ' 00:00:00');
-	timeLeft.setTime(timeLeft.getTime() + ((targetTime - 29 * 60 * 1000)- now.getTime()));
-	
-	var timeLeftString =  "";
-	var hoursLeft = timeLeft.getHours();
-	var minutesLeft = timeLeft.getMinutes();
-	
-	if((timeLeft.getDate() == now.getDate()) && (hoursLeft >= 1 || minutesLeft >= 1)) {
-		if(hoursLeft > 0) { timeLeftString += hoursLeft + 'h ' }
-		if(minutesLeft > 1 || (hoursLeft > 0 && minutesLeft > 0)) { timeLeftString += ((minutesLeft >= 10)?minutesLeft:('0' + minutesLeft)) + 'm ' }
-		if(hoursLeft == 0 && minutesLeft <= 1 && timeLeft.getSeconds() > 0) {
-			timeLeftString += timeLeft.getSeconds() + 's';
-		}
-	} else {
-		timeLeftString = '0';
+	// Set o tempo para os mostrar no 'relogio' e a var alertIndex
+	var alertIndex = preferencesService.getIntPref("henp.alertIndex");
+	if (alertIndex === 0 || alertIndex === undefined) {
+		time_hour_stamp(targetTime,30,'happyHour1');
 	}
-	timeLeftString = timeLeftString.replace(/\s$/,'') ;
+
+	timeLeftString = set_timeleft_stamp(targetTime);
+	console.log(timeLeftString);
 	
 	var timeToDeadline = Math.ceil((targetTime - now.getTime()) / 1000);
 	var firstAlertTime = timeToDeadline - (35 * 60);
 	var minimumTime = timeToDeadline - (30 * 60);
 	var exactTime = timeToDeadline - (15 * 60);
 	var lastAlertTime = timeToDeadline - (5 * 60);
-	
-	var alertIndex = preferencesService.getIntPref("henp.alertIndex");
-	
+		
 	if(timeToDeadline >= 0) { // Display time left
 		var countdownPanel = document.getElementById('henp_countdown_panel');
 		countdownPanel.textContent = henpGetLocaleString('remaining') + ' ' + timeLeftString ;
@@ -56,16 +36,19 @@ function henp_update() {
 		if(timeToDeadline < (timeToDeadline - lastAlertTime)) {
 			henpPanel.className = 'lastAlertTime';
 			if(alertIndex < 4) {
+				time_hour_stamp(targetTime,0,'happyHour3');
 				alertIndex = henp_alert_status(4);
 			}
 		} else if(timeToDeadline < (timeToDeadline - exactTime)) {
 			henpPanel.className = 'exactTime';
 			if(alertIndex < 3) {
+				time_hour_stamp(targetTime,0,'happyHour3');
 				alertIndex = henp_alert_status(3);
 			}
 		} else if(timeToDeadline < (timeToDeadline - minimumTime)) {
 			henpPanel.className = 'minimumTime';
 			if(alertIndex < 2) {
+				time_hour_stamp(targetTime,15,'happyHour2');
 				alertIndex = henp_alert_status(2);
 			}
 		} else if(timeToDeadline < (timeToDeadline - firstAlertTime)) {
@@ -88,6 +71,39 @@ function henp_update() {
 			alert(henpGetLocaleString('alertMessage5'));
 		}
 	}
+}
+
+function time_hour_stamp(targetTime,timeRemain,messageHour){
+	timeRemain = (timeRemain !== undefined) ? timeRemain : 30;
+	messageHour = (messageHour !== undefined) ? messageHour : 'happyHour1';
+	var hourPanel = document.getElementById('henp_hour_panel');
+	var hourPanelTime = new Date();
+	hourPanelTime.setTime(targetTime);
+	hourPanelTime.setMinutes(hourPanelTime.getMinutes() - timeRemain);
+	var hourPanelHours = hourPanelTime.getHours();
+	var hourPanelMinutes = hourPanelTime.getMinutes();
+	hourPanel.textContent = henpGetLocaleString(messageHour) + ' ' + ((hourPanelHours >= 10)?hourPanelHours:('0' + hourPanelHours)) + ':' + ((hourPanelMinutes >= 10)?hourPanelMinutes:('0' + hourPanelMinutes));
+}
+
+function set_timeleft_stamp(targetTime){
+	var now = new Date();
+	var timeLeft = new Date(now.getFullYear() +'/' + parseInt(1 +now.getMonth())+'/'+now.getDate() + ' 00:00:00');
+	timeLeft.setTime(timeLeft.getTime() + ((targetTime - 29 * 60 * 1000)- now.getTime()));
+	
+	var timeLeftString =  "";
+	var hoursLeft = timeLeft.getHours();
+	var minutesLeft = timeLeft.getMinutes();
+	
+	if((timeLeft.getDate() == now.getDate()) && (hoursLeft >= 1 || minutesLeft >= 1)) {
+		if(hoursLeft > 0) { timeLeftString += hoursLeft + 'h ' }
+		if(minutesLeft > 1 || (hoursLeft > 0 && minutesLeft > 0)) { timeLeftString += ((minutesLeft >= 10)?minutesLeft:('0' + minutesLeft)) + 'm ' }
+		if(hoursLeft == 0 && minutesLeft <= 1 && timeLeft.getSeconds() > 0) {
+			timeLeftString += timeLeft.getSeconds() + 's';
+		}
+	} else {
+		timeLeftString = '0';
+	}
+	return timeLeftString = timeLeftString.replace(/\s$/,'') ;
 }
 
 function henp_alert_status(alertIndex) {
