@@ -20,8 +20,24 @@ function henp_update() {
 		time_hour_stamp(targetTime,30,'happyHour1');
 	}
 
-	timeLeftString = set_timeleft_stamp(targetTime);
-	console.log(timeLeftString);
+	var timeLeftString =  "";
+	var now = new Date();
+	var timeLeft = new Date(now.getFullYear() +'/' + parseInt(1 +now.getMonth())+'/'+now.getDate() + ' 00:00:00');
+	timeLeft.setTime(timeLeft.getTime() + ((targetTime - 29 * 60 * 1000)- now.getTime()));
+	
+	var hoursLeft = timeLeft.getHours();
+	var minutesLeft = timeLeft.getMinutes();
+	
+	if((timeLeft.getDate() == now.getDate()) && (hoursLeft >= 1 || minutesLeft >= 1)) {
+		if(hoursLeft > 0) { timeLeftString += hoursLeft + 'h ' }
+		if(minutesLeft > 1 || (hoursLeft > 0 && minutesLeft > 0)) { timeLeftString += ((minutesLeft >= 10)?minutesLeft:('0' + minutesLeft)) + 'm ' }
+		if(hoursLeft == 0 && minutesLeft <= 1 && timeLeft.getSeconds() > 0) {
+			timeLeftString += timeLeft.getSeconds() + 's';
+		}
+	} else {
+		timeLeftString = '0';
+	}
+	timeLeftString = timeLeftString.replace(/\s$/,'') ;
 	
 	var timeToDeadline = Math.ceil((targetTime - now.getTime()) / 1000);
 	var firstAlertTime = timeToDeadline - (35 * 60);
@@ -36,7 +52,6 @@ function henp_update() {
 		if(timeToDeadline < (timeToDeadline - lastAlertTime)) {
 			henpPanel.className = 'lastAlertTime';
 			if(alertIndex < 4) {
-				time_hour_stamp(targetTime,0,'happyHour3');
 				alertIndex = henp_alert_status(4);
 			}
 		} else if(timeToDeadline < (timeToDeadline - exactTime)) {
@@ -83,27 +98,6 @@ function time_hour_stamp(targetTime,timeRemain,messageHour){
 	var hourPanelHours = hourPanelTime.getHours();
 	var hourPanelMinutes = hourPanelTime.getMinutes();
 	hourPanel.textContent = henpGetLocaleString(messageHour) + ' ' + ((hourPanelHours >= 10)?hourPanelHours:('0' + hourPanelHours)) + ':' + ((hourPanelMinutes >= 10)?hourPanelMinutes:('0' + hourPanelMinutes));
-}
-
-function set_timeleft_stamp(targetTime){
-	var now = new Date();
-	var timeLeft = new Date(now.getFullYear() +'/' + parseInt(1 +now.getMonth())+'/'+now.getDate() + ' 00:00:00');
-	timeLeft.setTime(timeLeft.getTime() + ((targetTime - 29 * 60 * 1000)- now.getTime()));
-	
-	var timeLeftString =  "";
-	var hoursLeft = timeLeft.getHours();
-	var minutesLeft = timeLeft.getMinutes();
-	
-	if((timeLeft.getDate() == now.getDate()) && (hoursLeft >= 1 || minutesLeft >= 1)) {
-		if(hoursLeft > 0) { timeLeftString += hoursLeft + 'h ' }
-		if(minutesLeft > 1 || (hoursLeft > 0 && minutesLeft > 0)) { timeLeftString += ((minutesLeft >= 10)?minutesLeft:('0' + minutesLeft)) + 'm ' }
-		if(hoursLeft == 0 && minutesLeft <= 1 && timeLeft.getSeconds() > 0) {
-			timeLeftString += timeLeft.getSeconds() + 's';
-		}
-	} else {
-		timeLeftString = '0';
-	}
-	return timeLeftString = timeLeftString.replace(/\s$/,'') ;
 }
 
 function henp_alert_status(alertIndex) {
