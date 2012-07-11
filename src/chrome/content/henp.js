@@ -23,7 +23,15 @@ function henp_update() {
 	var timeLeftString =  "";
 	var now = new Date();
 	var timeLeft = new Date(now.getFullYear() +'/' + parseInt(1 +now.getMonth())+'/'+now.getDate() + ' 00:00:00');
-	timeLeft.setTime(timeLeft.getTime() + ((targetTime - 29 * 60 * 1000)- now.getTime()));
+	if (alertIndex === 2) {
+		timeLeft.setTime(timeLeft.getTime() + ((targetTime - 14 * 60 * 1000)- now.getTime()));
+	} else if (alertIndex === 3 || alertIndex === 4) {
+		timeLeft.setTime(timeLeft.getTime() + ((targetTime - (-1 * 60 * 1000))- now.getTime()));
+	} else {
+		timeLeft.setTime(timeLeft.getTime() + ((targetTime - 29 * 60 * 1000)- now.getTime()));
+	}
+	console = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
+	console.logStringMessage('alertIndex = ' + alertIndex);
 	
 	var hoursLeft = timeLeft.getHours();
 	var minutesLeft = timeLeft.getMinutes();
@@ -52,6 +60,7 @@ function henp_update() {
 		if(timeToDeadline < (timeToDeadline - lastAlertTime)) {
 			henpPanel.className = 'lastAlertTime';
 			if(alertIndex < 4) {
+				time_hour_stamp(targetTime,0,'happyHour3');
 				alertIndex = henp_alert_status(4);
 			}
 		} else if(timeToDeadline < (timeToDeadline - exactTime)) {
