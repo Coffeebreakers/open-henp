@@ -4,17 +4,21 @@
 		 xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 
 	<Description about="urn:mozilla:install-manifest">
-		<em:id>horaextra@naopode</em:id>
+		<em:id>open-henp@coffeebreakers.org</em:id>
 		<em:name>Hora Extra Não Pode</em:name>
-		<em:version>1.0.2</em:version>
+		<em:version>1.0.0 final</em:version>
 		<em:type>2</em:type>
 		<em:unpack>true</em:unpack>
 		
-		<em:creator>Renato Rodrigues</em:creator>
-		<em:homepageURL>http://www.renatorodrigues.com</em:homepageURL>
+		<em:homepageURL>http://coffeebreakers.github.com/open-henp/</em:homepageURL>
 		<em:optionsURL>chrome://henp/content/henp.xul</em:optionsURL>
 		<em:aboutURL>chrome://henp/content/about.xul</em:aboutURL>
 		<em:iconURL>chrome://henp/skin/henp.png</em:iconURL>
+		
+        <em:creator>Renato Rodrigues</em:creator>
+        <em:contributor>Clauber Stipkovic Halic (clauber.halic@gmail.com)</em:contributor>
+        <em:contributor>Mario Felipe Rinaldi (lalo.rinaldi@gmail.com)</em:contributor>
+        <em:contributor>Rafael Lazarini (rlazarini@gmail.com)</em:contributor>
 		
 		<em:description>Te avisa a hora de sair (ou "Corre senão o bicho pega!")</em:description>
 		
@@ -22,7 +26,7 @@
 			<Description>
 				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
 				<em:minVersion>3.6</em:minVersion>
-				<em:maxVersion>10.0.*</em:maxVersion>
+				<em:maxVersion>20.0.*</em:maxVersion>
 			</Description>
 		</em:targetApplication>
 		

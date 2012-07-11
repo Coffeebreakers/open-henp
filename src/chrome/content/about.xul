@@ -24,13 +24,17 @@
 					<text value="&henp.about.author;" class="heavy"/>
 					<text value="Renato Rodrigues" onclick="window.open('mailto:renato.sp@gmail.com');"  class="url"/>
 					
+                    <text value="&henp.about.contributor;" class="heavy"/>  
+					<text value="Clauber Stipkovic Halic" onclick="window.open('mailto:clauber.halic@gmail.com');"  class="url"/>
+					<text value="Mario Felipe Rinaldi" onclick="window.open('mailto:lalo.rinaldi@gmail.com');"  class="url"/>
+					<text value="Rafael Lazarini" onclick="window.open('mailto:rlazarini@gmail.com');"  class="url"/>
+					                    
 					<separator class="thin"/>
-					<text value="&henp.about.site;" class="heavy"/>
-					<text value="www.renatorodrigues.com" onclick="window.open('http://www.renatorodrigues.com');" class="url"/>
-					
-					<separator class="thin"/>
-					<text value="&henp.about.twitter;" class="heavy"/>
-					<text value="@renatorodrigues" onclick="window.open('http://www.twitter.com/renatorodrigues');" class="url"/>
+					<text value="&henp.about.sites;" class="heavy"/>
+					<text value="&henp.about.site;" onclick="window.open('http://coffeebreakers.github.com/open-henp/');" class="url"/>
+					<text value="&henp.about.github;" onclick="window.open('https://github.com/Coffeebreakers/open-henp/');" class="url"/>
+					<text value="&henp.about.authorsite;" onclick="window.open('http://www.renatorodrigues.com');" class="url"/>
+
 				</vbox>
 				<spacer width="15"/>
 				<vbox align="top">

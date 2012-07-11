@@ -1,5 +1,5 @@
 <!ENTITY henp.extensionName                                 "Hora Extra Não Pode">
-<!ENTITY henp.versionNumber                                 "1.0">
+<!ENTITY henp.versionNumber                                 "1.0.0">
 
 <!ENTITY henp.settings.targetTab.target                     "Entrada">
 <!ENTITY henp.settings.targetTab.hours                      "Horas">
@@ -14,6 +14,10 @@
 <!ENTITY henp.about.title                                   "Sobre">
 <!ENTITY henp.about.version                                 "Versão">
 <!ENTITY henp.about.author                                  "Autor">
-<!ENTITY henp.about.site                                    "Site">
+<!ENTITY henp.about.contributor                             "Contribuidor">
+<!ENTITY henp.about.sites                                   "Sites">
+<!ENTITY henp.about.site                                    "Site da extensão">
+<!ENTITY henp.about.github                                  "GitHub da extensão">
+<!ENTITY henp.about.authorsite                              "Site do autor">
 <!ENTITY henp.about.twitter                                 "Twitter">
 <!ENTITY henp.about.close                                   "Fechar">
