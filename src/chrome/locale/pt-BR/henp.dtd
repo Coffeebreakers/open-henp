@@ -8,10 +8,10 @@
 <!ENTITY henp.settings.targetTab.alert.sound                "Tocar som (.wav)">
 <!ENTITY henp.settings.targetTab.alert.sound.browse         "Procurar...">
 <!ENTITY henp.settings.targetTab.initialTime.label          "Entrada">
-<!ENTITY henp.settings.targetTab.limitTime.label            "Limite de tolerância">
-<!ENTITY henp.settings.targetTab.hoursPerWeek.label         "Jornada de trabalho semanal">
-<!ENTITY henp.settings.targetTab.daysPerWeek.label          "Dias por semana">
+<!ENTITY henp.settings.targetTab.limitTime.label            "Tolerância">
+<!ENTITY henp.settings.targetTab.HoursPerDay.label          "Jornada de trabalho Diária">
 <!ENTITY henp.settings.targetTab.options                    "Opções">
+<!ENTITY henp.settings.targetTab.holidaySaturday            "Feriado no Sábado">
 
 <!ENTITY henp.about.title                                   "Sobre">
 <!ENTITY henp.about.version                                 "Versão">

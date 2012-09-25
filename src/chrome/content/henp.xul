@@ -30,14 +30,25 @@
 			</hbox>
 		</box>
 	</groupbox>
-	<groupbox id="boxlimitTime" orient="vertical" align="center" style="padding: 10px;">
-		<caption label="&henp.settings.targetTab.limitTime.label;" />
+	<groupbox id="boxHoursPerDay" orient="vertical" align="center" style="padding: 10px;">
+		<caption label="&henp.settings.targetTab.HoursPerDay.label;" />
 		<box orient="vertical">
 			<hbox>
 				<vbox align="center">
 					<label value="&henp.settings.targetTab.hours;" />
-					<vspinbox id="spinLimitTimeHours" min="0" max="23" value="0" />
+					<vspinbox id="spinHoursPerDayHours" min="0" max="23" value="0" oncommand="henp_hoursPerDayChange();" />
 				</vbox>
+				<vbox align="center">
+					<label value="&henp.settings.targetTab.minutes;" />
+					<vspinbox id="spinHoursPerDayMinutes" min="0" max="59" value="0" oncommand="henp_hoursPerDayChange();" />
+				</vbox>
+			</hbox>
+		</box>
+	</groupbox>
+	<groupbox id="boxlimitTime" orient="vertical" align="center" style="padding: 10px;">
+		<caption label="&henp.settings.targetTab.limitTime.label;" />
+		<box orient="vertical">
+			<hbox>
 				<vbox align="center">
 					<label value="&henp.settings.targetTab.minutes;" />
 					<vspinbox id="spinLimitTimeMinutes" min="0" max="59" value="0" />
@@ -45,31 +56,9 @@
 			</hbox>
 		</box>
 	</groupbox>
-	<groupbox id="boxHoursPerWeek" orient="vertical" align="center" style="padding: 10px;">
-		<caption label="&henp.settings.targetTab.HoursPerWeek.label;" />
-		<box orient="vertical">
-			<hbox>
-				<vbox align="center">
-					<label value="&henp.settings.targetTab.hours;" />
-					<vspinbox id="spinHoursPerWeekHours" min="0" max="23" value="0" />
-				</vbox>
-				<vbox align="center">
-					<label value="&henp.settings.targetTab.minutes;" />
-					<vspinbox id="spinHoursPerWeekMinutes" min="0" max="59" value="0" />
-				</vbox>
-			</hbox>
-		</box>
-	</groupbox>
-	<groupbox id="boxDaysPerWeek" orient="vertical" align="center" style="padding: 10px;">
-		<caption label="&henp.settings.targetTab.workHours;" />
-		<box id="absoluteLimitBox" orient="vertical">
-			<hbox>
-				<vbox align="center">
-					<label value="&henp.settings.targetTab.days;" />
-					<vspinbox id="spinDaysPerWeek" min="0" max="7" value="0" />
-				</vbox>
-			</hbox>
-		</box>
+	<groupbox id="optionsGroupbox">
+		<caption label="&henp.settings.targetTab.options;" />
+		<checkbox id="holidaySaturday" label="&henp.settings.targetTab.holidaySaturday;" />
 	</groupbox>
 	<groupbox id="alertGroupbox">
 		<caption label="&henp.settings.targetTab.alert;" />

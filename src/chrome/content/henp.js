@@ -3,6 +3,7 @@ function henp_update() {
 
 	var henpEnabled = preferencesService.getBoolPref("henp.enabled");
 	var targetTime = preferencesService.getCharPref("henp.targetTime");
+	var toleranceLimit = preferencesService.getCharPref("henp.limitTime");
 	var henpPanel = document.getElementById('henp_panel');
 	
 	if(!henpEnabled || !targetTime) {
@@ -17,7 +18,7 @@ function henp_update() {
 	// Set o tempo para os mostrar no 'relogio' e a var alertIndex
 	var alertIndex = preferencesService.getIntPref("henp.alertIndex");
 	if (alertIndex === 0 || alertIndex === undefined) {
-		time_hour_stamp(targetTime,30,'happyHour1');
+		time_hour_stamp(targetTime,toleranceLimit*2,'happyHour1');
 	}
 
 	var timeLeftString =  "";
@@ -48,9 +49,9 @@ function henp_update() {
 	timeLeftString = timeLeftString.replace(/\s$/,'') ;
 	
 	var timeToDeadline = Math.ceil((targetTime - now.getTime()) / 1000);
-	var firstAlertTime = timeToDeadline - (35 * 60);
-	var minimumTime = timeToDeadline - (30 * 60);
-	var exactTime = timeToDeadline - (15 * 60);
+	var firstAlertTime = timeToDeadline - ((toleranceLimit * 2 * 60) + 5);
+	var minimumTime = timeToDeadline - (toleranceLimit * 2 * 60);
+	var exactTime = timeToDeadline - (toleranceLimit * 60);
 	var lastAlertTime = timeToDeadline - (5 * 60);
 		
 	if(timeToDeadline >= 0) { // Display time left
@@ -72,7 +73,7 @@ function henp_update() {
 		} else if(timeToDeadline < (timeToDeadline - minimumTime)) {
 			henpPanel.className = 'minimumTime';
 			if(alertIndex < 2) {
-				time_hour_stamp(targetTime,15,'happyHour2');
+				time_hour_stamp(targetTime,toleranceLimit,'happyHour2');
 				alertIndex = henp_alert_status(2);
 			}
 		} else if(timeToDeadline < (timeToDeadline - firstAlertTime)) {
@@ -173,11 +174,17 @@ function henpGetLocaleString(strName) {
 function loadTargetForm() {
 	const preferencesService = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("");
 	
-	var initialTime = preferencesService.getCharPref("henp.initialTime").split(":") ;
-	document.getElementById("spinHours").value = initialTime[0];
-	document.getElementById("spinMinutes").value = initialTime[1];
-	document.getElementById("workHoursRadioGroup").value = preferencesService.getIntPref("henp.workHours");
-	document.getElementById("holidaySaturday").disabled = (preferencesService.getIntPref("henp.workHours") == 1);
+	var initialTime = preferencesService.getCharPref("henp.initialTime").split(":");
+	var hoursPerDay = preferencesService.getCharPref("henp.hoursPerDay").split(":");
+	
+	document.getElementById("spinInitialTimeHours").value = initialTime[0];
+	document.getElementById("spinInitialTimeMinutes").value = initialTime[1];
+		
+	document.getElementById("spinHoursPerDayHours").value = hoursPerDay[0];
+	document.getElementById("spinHoursPerDayMinutes").value = hoursPerDay[1];
+	
+	document.getElementById("spinLimitTimeMinutes").value = preferencesService.getCharPref("henp.limitTime");
+	//document.getElementById("holidaySaturday").disabled = (preferencesService.getIntPref("henp.workHours") == 1);
 	document.getElementById("holidaySaturday").checked = preferencesService.getBoolPref("henp.holidaySaturday");
 	document.getElementById("alertMethodSound").checked = preferencesService.getBoolPref("henp.alertMethodSound") ;
 	document.getElementById("alertSoundFile").value = preferencesService.getCharPref("henp.alertSoundFile") ;
@@ -188,27 +195,33 @@ function saveHenpSettings() {
 
 	preferencesService.setCharPref("henp.targetTime", calculateTimes());
 
-	var alertMethodSound = document.getElementById("alertMethodSound") ;
-	var alertSoundFile = document.getElementById("alertSoundFile") ;
-	var workHours = document.getElementById("workHoursRadioGroup");
-	var holidaySaturday = document.getElementById("holidaySaturday");
-	preferencesService.setIntPref("henp.workHours", workHours.value) ;
-	preferencesService.setBoolPref("henp.holidaySaturday", holidaySaturday.checked) ;
-	preferencesService.setBoolPref("henp.alertMethodSound", alertMethodSound.checked) ;
-	preferencesService.setCharPref("henp.alertSoundFile", alertSoundFile.value) ;
+	var alertMethodSound = document.getElementById("alertMethodSound");
+	var alertSoundFile = document.getElementById("alertSoundFile");
+	var holidaySaturday = document.getElementById("holidaySaturday");	
 	
-	var initialHour = document.getElementById('spinHours').value;
-	var initialMinute = document.getElementById('spinMinutes').value;
-	preferencesService.setCharPref("henp.initialTime", initialHour + ':' + initialMinute) ;
+	var initialHour = document.getElementById('spinInitialTimeHours').value;
+	var initialMinute = document.getElementById('spinInitialTimeMinutes').value;
+	preferencesService.setCharPref("henp.initialTime", initialHour + ':' + initialMinute);
+	
+	var limitMinute = document.getElementById('spinLimitTimeMinutes').value;
+	preferencesService.setCharPref("henp.limitTime", limitMinute);
+	
+	var perDayHour = document.getElementById('spinHoursPerDayHours').value;
+	var perDayMinute = document.getElementById('spinHoursPerDayMinutes').value;
+	preferencesService.setCharPref("henp.hoursPerDay", perDayHour + ':' + perDayMinute);
+	
+	preferencesService.setBoolPref("henp.holidaySaturday", holidaySaturday.checked);
+	preferencesService.setBoolPref("henp.alertMethodSound", alertMethodSound.checked);
+	preferencesService.setCharPref("henp.alertSoundFile", alertSoundFile.value);
 	preferencesService.setBoolPref("henp.enabled", true);
 	preferencesService.setIntPref("henp.alertIndex", 0);
 	
-	return true ;
+	return true;
 }
 
 function calculateTimes() {
-	var initHour = parseInt(document.getElementById("spinHours").value,10) ;
-	var initMinutes = parseInt(document.getElementById("spinMinutes").value,10) ;
+	var initHour = parseInt(document.getElementById("spinInitialTimeHours").value,10);
+	var initMinutes = parseInt(document.getElementById("spinInitialTimeMinutes").value,10);
 	
 	var initDate = new Date();
 	initDate.setHours(initHour);
@@ -216,17 +229,14 @@ function calculateTimes() {
 	initDate.setSeconds(0);
 	initDate.setMilliseconds(0);
 	
-	var slaveMode = document.getElementById("workHoursRadioGroup").value;
-	var maxLimitMinutes = 15;
+	var perDayHour = parseInt(document.getElementById('spinHoursPerDayHours').value,10);
+	var perDayMinute = parseInt(document.getElementById('spinHoursPerDayMinutes').value,10);
 	
-	if(slaveMode == 0) {
-		var holidayWeek = document.getElementById("holidaySaturday").checked;
-		var workHours = 9;
-		var workMinutes = holidayWeek ? 0 : 48;
-	} else {
-		var workHours = 8;
-		var workMinutes = 20;
-	}
+	var maxLimitMinutes = parseInt(document.getElementById("spinLimitTimeMinutes").value,10);
+	
+	var holidayWeek = document.getElementById("holidaySaturday").checked;
+	var workHours = perDayHour + 1 ;
+	var workMinutes = (holidayWeek) ? 0 : perDayMinute;
 	
 	var relativeTotalSeconds = (workHours * 3600) + (workMinutes * 60) + (maxLimitMinutes * 60);
 
@@ -237,11 +247,25 @@ function calculateTimes() {
 	return relativeTargetTime.getTime();
 }
 
+function henp_hoursPerDayChange() {
+	var perDayHour = parseInt(document.getElementById('spinHoursPerDayHours').value,10);
+	var perDayMinute = parseInt(document.getElementById('spinHoursPerDayMinutes').value,10);
+	var perDay = perDayHour + ':' + perDayMinute;
+	var holidaySaturday = document.getElementById('holidaySaturday');
+	
+	
+	if (perDay !== '8:48') {
+		holidaySaturday.disabled = true;
+		holidaySaturday.checked = false; 
+	}
+}
+/*
 function henp_workHoursChange(option) {
 	var holidaySaturday = document.getElementById('holidaySaturday');
 	holidaySaturday.disabled = (option == 1);
 	if(option == 1) { holidaySaturday.checked = false; }
 }
+*/
 
 function browseSoundFile()
 {
