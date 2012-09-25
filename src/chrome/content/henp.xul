@@ -15,31 +15,61 @@
 	
 	<script type="application/x-javascript" src="chrome://henp/content/henp.js" />
 
-	<groupbox id="targetGroupBox" orient="vertical" align="center" style="padding: 10px;">
-		<caption label="&henp.settings.targetTab.target;" />
-		<box id="absoluteTargetBox" orient="vertical">
+	<groupbox id="boxInitialTime" orient="vertical" align="center" style="padding: 10px;">
+		<caption label="&henp.settings.targetTab.initialTime.label;" />
+		<box orient="vertical">
 			<hbox>
 				<vbox align="center">
 					<label value="&henp.settings.targetTab.hours;" />
-					<vspinbox id="spinHours" min="0" max="23" value="0" />
+					<vspinbox id="spinInitialTimeHours" min="0" max="23" value="0" />
 				</vbox>
 				<vbox align="center">
 					<label value="&henp.settings.targetTab.minutes;" />
-					<vspinbox id="spinMinutes" min="0" max="59" value="0" />
+					<vspinbox id="spinInitialTimeMinutes" min="0" max="59" value="0" />
 				</vbox>
 			</hbox>
 		</box>
 	</groupbox>
-	<groupbox id="workHoursGroup">
-		<caption label="&henp.settings.workHours;" />
-		<radiogroup id="workHoursRadioGroup" orient="horizontal" oncommand="henp_workHoursChange(this.value);">
-			<radio id="work848" label="8:48h" value="0" />
-			<radio id="work720" label="7:20h" value="1" />
-		</radiogroup>
+	<groupbox id="boxlimitTime" orient="vertical" align="center" style="padding: 10px;">
+		<caption label="&henp.settings.targetTab.limitTime.label;" />
+		<box orient="vertical">
+			<hbox>
+				<vbox align="center">
+					<label value="&henp.settings.targetTab.hours;" />
+					<vspinbox id="spinLimitTimeHours" min="0" max="23" value="0" />
+				</vbox>
+				<vbox align="center">
+					<label value="&henp.settings.targetTab.minutes;" />
+					<vspinbox id="spinLimitTimeMinutes" min="0" max="59" value="0" />
+				</vbox>
+			</hbox>
+		</box>
 	</groupbox>
-	<groupbox id="optionsGroupbox">
-		<caption label="&henp.settings.options;" />
-		<checkbox id="holidaySaturday" label="&henp.settings.holidaySaturday;" />
+	<groupbox id="boxHoursPerWeek" orient="vertical" align="center" style="padding: 10px;">
+		<caption label="&henp.settings.targetTab.HoursPerWeek.label;" />
+		<box orient="vertical">
+			<hbox>
+				<vbox align="center">
+					<label value="&henp.settings.targetTab.hours;" />
+					<vspinbox id="spinHoursPerWeekHours" min="0" max="23" value="0" />
+				</vbox>
+				<vbox align="center">
+					<label value="&henp.settings.targetTab.minutes;" />
+					<vspinbox id="spinHoursPerWeekMinutes" min="0" max="59" value="0" />
+				</vbox>
+			</hbox>
+		</box>
+	</groupbox>
+	<groupbox id="boxDaysPerWeek" orient="vertical" align="center" style="padding: 10px;">
+		<caption label="&henp.settings.targetTab.workHours;" />
+		<box id="absoluteLimitBox" orient="vertical">
+			<hbox>
+				<vbox align="center">
+					<label value="&henp.settings.targetTab.days;" />
+					<vspinbox id="spinDaysPerWeek" min="0" max="7" value="0" />
+				</vbox>
+			</hbox>
+		</box>
 	</groupbox>
 	<groupbox id="alertGroupbox">
 		<caption label="&henp.settings.targetTab.alert;" />

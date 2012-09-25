@@ -1,15 +1,17 @@
 <!ENTITY henp.extensionName                                 "Hora Extra Não Pode">
-<!ENTITY henp.versionNumber                                 "1.0.0">
+<!ENTITY henp.versionNumber                                 "2.0.0">
 
-<!ENTITY henp.settings.targetTab.target                     "Entrada">
 <!ENTITY henp.settings.targetTab.hours                      "Horas">
 <!ENTITY henp.settings.targetTab.minutes                    "Minutos">
+<!ENTITY henp.settings.targetTab.days                       "Dia(s)">
 <!ENTITY henp.settings.targetTab.alert                      "Alerta">
 <!ENTITY henp.settings.targetTab.alert.sound                "Tocar som (.wav)">
 <!ENTITY henp.settings.targetTab.alert.sound.browse         "Procurar...">
-<!ENTITY henp.settings.workHours                            "Jornada de Trabalho">
-<!ENTITY henp.settings.options                              "Opções">
-<!ENTITY henp.settings.holidaySaturday                      "Feriado no Sábado">
+<!ENTITY henp.settings.targetTab.initialTime.label          "Entrada">
+<!ENTITY henp.settings.targetTab.limitTime.label            "Limite de tolerância">
+<!ENTITY henp.settings.targetTab.hoursPerWeek.label         "Jornada de trabalho semanal">
+<!ENTITY henp.settings.targetTab.daysPerWeek.label          "Dias por semana">
+<!ENTITY henp.settings.targetTab.options                    "Opções">
 
 <!ENTITY henp.about.title                                   "Sobre">
 <!ENTITY henp.about.version                                 "Versão">
