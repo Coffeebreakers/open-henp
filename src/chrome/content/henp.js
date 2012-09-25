@@ -31,8 +31,8 @@ function henp_update() {
 	} else {
 		timeLeft.setTime(timeLeft.getTime() + ((targetTime - (toleranceLimit * 2 - 1) * 60 * 1000)- now.getTime()));
 	}
-	console = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
-	console.logStringMessage('alertIndex = ' + alertIndex);
+	//console = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
+	//console.logStringMessage('alertIndex = ' + alertIndex);
 	
 	var hoursLeft = timeLeft.getHours();
 	var minutesLeft = timeLeft.getMinutes();
@@ -49,7 +49,7 @@ function henp_update() {
 	timeLeftString = timeLeftString.replace(/\s$/,'') ;
 	
 	var timeToDeadline = Math.ceil((targetTime - now.getTime()) / 1000);
-	var firstAlertTime = timeToDeadline - ((toleranceLimit * 2) + 5 * 60);
+	var firstAlertTime = timeToDeadline - ((toleranceLimit * 2 + 5) * 60);
 	var minimumTime = timeToDeadline - (toleranceLimit * 2 * 60);
 	var exactTime = timeToDeadline - (toleranceLimit * 60);
 	var lastAlertTime = timeToDeadline - (5 * 60);
