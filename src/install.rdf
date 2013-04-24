@@ -33,7 +33,7 @@
 				<!-- Komodo Edit's uuid -->
 				<em:id>{b1042fb5-9e9c-11db-b107-000d935d3368}</em:id>
 				<em:minVersion>4.0</em:minVersion>
-				<em:maxVersion>10.*</em:maxVersion>
+				<em:maxVersion>30.*</em:maxVersion>
 			</Description>
 		</em:targetApplication>
 		
